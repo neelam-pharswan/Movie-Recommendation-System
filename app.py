@@ -1,6 +1,64 @@
 import streamlit as st
 import pandas as pd
 
+st.markdown("""
+<style>
+.stApp {
+    background: linear-gradient(to right, #141e30, #243b55);
+    color: white;
+}
+
+h1 {
+    color: #ff4b4b;
+    text-align: center;
+    font-size: 42px;
+    font-weight: 800;
+}
+
+p, label, .stMarkdown {
+    color: white;
+    font-size: 16px;
+}
+
+div[data-baseweb="select"] {
+    background-color: white;
+    border-radius: 10px;
+}
+
+.stButton > button {
+    background-color: #ff4b4b;
+    color: white;
+    border-radius: 12px;
+    height: 45px;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+}
+
+.stButton > button:hover {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+}
+
+[data-testid="stDataFrame"] {
+    background-color: white;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+h2, h3 {
+    color: #ffd166;
+    text-align: center;
+}
+
+.stAlert {
+    border-radius: 12px;
+}
+</style>
+""", unsafe_allow_html=True)
+
 movies = pd.read_pickle("movies.pkl")
 movie_similarity = pd.read_pickle("movie_similarity.pkl")
 

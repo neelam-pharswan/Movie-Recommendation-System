@@ -3,23 +3,18 @@ import pandas as pd
 import requests
 
 st.markdown("""
-st.markdown("""
 <style>
-
-/* Background */
 .stApp {
     background: linear-gradient(135deg, #1a001a, #C71585, #2b2b2b);
     color: white;
 }
 
-/* Main container spacing */
 .block-container {
     padding-top: 2rem;
     padding-bottom: 2rem;
     max-width: 1300px;
 }
 
-/* Title */
 h1 {
     text-align: center;
     font-size: 52px;
@@ -27,7 +22,11 @@ h1 {
     color: white;
 }
 
-/* Left panel glass effect */
+p {
+    font-size: 19px;
+    color: #f5f5f5;
+}
+
 [data-testid="column"]:first-child {
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(12px);
@@ -35,24 +34,23 @@ h1 {
     padding: 20px;
 }
 
-/* Labels */
 label {
     font-size: 18px !important;
     font-weight: 600;
+    color: white !important;
 }
 
-/* Selectbox */
 div[data-baseweb="select"] {
     background: white;
     border-radius: 12px;
 }
 
-/* Button */
 .stButton > button {
     background: linear-gradient(to right, #8B0000, #C71585);
     color: white;
     border-radius: 14px;
     height: 55px;
+    width: 100%;
     font-size: 20px;
     font-weight: bold;
     border: none;
@@ -62,38 +60,34 @@ div[data-baseweb="select"] {
 .stButton > button:hover {
     transform: scale(1.08);
     background: linear-gradient(to right, #ff004f, #ff1493);
+    color: white;
 }
 
-/* Subheader */
-h3 {
+h2, h3 {
     text-align: center;
     font-size: 30px;
+    color: white;
 }
 
-/* Poster images */
 img {
     border-radius: 14px;
     transition: transform 0.3s ease;
 }
 
-/* Hover zoom effect */
 img:hover {
     transform: scale(1.12);
 }
 
-/* Movie title */
 strong {
     font-size: 17px;
+    color: white;
 }
 
-/* Caption */
 .stCaption {
     font-size: 14px;
     color: #e0e0e0;
 }
-
 </style>
-""", unsafe_allow_html=True)
 """, unsafe_allow_html=True)
 
 movies = pd.read_pickle("movies.pkl")
@@ -183,12 +177,12 @@ with right:
         else:
             st.subheader("Recommended Movies")
 
-            cols = st.columns(5)
+            cols = st.columns(6)
 
             for i, row in result.head(10).iterrows():
                 poster = fetch_poster(row['title'])
 
-                with cols[i % 5]:
+                with cols[i % 6]:
                     if poster:
                         st.image(poster, use_container_width=True)
                     else:

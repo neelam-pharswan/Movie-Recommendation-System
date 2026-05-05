@@ -1,80 +1,114 @@
 import streamlit as st
 import pandas as pd
 import requests
+import base64
 
-st.markdown("""
+def get_base64(file):
+    with open(file, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
+bg = get_base64("bg image.webp")
+
+st.markdown(f"""
 <style>
-.stApp {
-    background: linear-gradient(135deg, #C71585, #8B0000, #2b2b2b);
+.stApp {{
+    background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.75)),
+                      url("data:image/webp;base64,{bg}");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     color: white;
-}
+}}
 
-h1 {
+h1 {{
     color: #ffffff;
     text-align: center;
-    font-size: 50px;
+    font-size: 55px;
     font-weight: 900;
-}
+}}
 
-p {
-    font-size: 20px;
+p {{
+    font-size: 22px;
     color: #f5f5f5;
-}
+}}
 
-label {
-    font-size: 20px !important;
+label {{
+    font-size: 21px !important;
     font-weight: 700;
     color: #ffffff !important;
-}
+}}
 
-div[data-baseweb="select"] {
+div[data-baseweb="select"] {{
     background-color: #ffffff;
-    border-radius: 12px;
-    padding: 6px;
+    border-radius: 14px;
+    padding: 7px;
     font-size: 18px;
-}
+}}
 
-.stButton > button {
+.stButton > button {{
     background: linear-gradient(to right, #8B0000, #C71585);
     color: white;
-    border-radius: 14px;
-    height: 58px;
+    border-radius: 16px;
+    height: 60px;
     width: 100%;
-    font-size: 22px;
+    font-size: 23px;
     font-weight: bold;
     border: none;
-}
+}}
 
-.stButton > button:hover {
+.stButton > button:hover {{
     background: linear-gradient(to right, #a30000, #ff1493);
     color: white;
-}
+    transform: scale(1.04);
+}}
 
-h2, h3 {
-    font-size: 30px;
+[data-testid="column"]:first-child {{
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px);
+    border-radius: 22px;
+    padding: 25px;
+    border: 1px solid rgba(255,255,255,0.25);
+}}
+
+h2, h3 {{
+    font-size: 34px;
     color: #ffffff;
     text-align: center;
-}
+}}
 
-img {
-    border-radius: 14px;
+img {{
+    border-radius: 16px;
     margin-bottom: 10px;
-}
+    transition: transform 0.3s ease;
+}}
 
-strong {
-    font-size: 18px;
-}
+img:hover {{
+    transform: scale(1.08);
+}}
 
-[data-testid="stCaptionContainer"] {
-    font-size: 15px;
+strong {{
+    font-size: 19px;
+    color: white;
+}}
+
+.rating {{
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffd700;
+    margin-top: -5px;
+    margin-bottom: 5px;
+}}
+
+[data-testid="stCaptionContainer"] {{
+    font-size: 16px;
     color: #eeeeee;
-}
+}}
 
-.block-container {
+.block-container {{
     padding-top: 2rem;
     padding-bottom: 2rem;
-    max-width: 1400px;
-}
+    max-width: 1450px;
+}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -87,7 +121,7 @@ def clean_title(title):
     return title.rsplit("(", 1)[0].strip()
 
 @st.cache_data
-def fetch_poster(movie_title):
+def fetch_movie_details(movie_title):
     url = "https://api.themoviedb.org/3/search/movie"
 
     params = {
@@ -99,12 +133,18 @@ def fetch_poster(movie_title):
     data = response.json()
 
     if data["results"]:
-        poster_path = data["results"][0].get("poster_path")
+        movie_data = data["results"][0]
+        poster_path = movie_data.get("poster_path")
+        rating = movie_data.get("vote_average")
+
+        poster_url = None
 
         if poster_path:
-            return "https://image.tmdb.org/t/p/w500" + poster_path
+            poster_url = "https://image.tmdb.org/t/p/w500" + poster_path
 
-    return None
+        return poster_url, rating
+
+    return None, None
 
 all_genres = set()
 
@@ -131,7 +171,6 @@ with left:
     ]
 
     movie_list = filtered_movies['title'].sort_values().values
-
     movie_name = st.selectbox("Choose a movie:", movie_list)
 
     recommend_clicked = st.button("Recommend")
@@ -168,7 +207,7 @@ with right:
             cols = st.columns(5)
 
             for i, row in result.head(10).iterrows():
-                poster = fetch_poster(row['title'])
+                poster, rating = fetch_movie_details(row['title'])
 
                 with cols[i % 5]:
                     if poster:
@@ -177,4 +216,10 @@ with right:
                         st.write("🎬")
 
                     st.markdown(f"**{row['title']}**")
+
+                    if rating:
+                        st.markdown(f"<div class='rating'>⭐ {rating:.1f}/10</div>", unsafe_allow_html=True)
+                    else:
+                        st.markdown("<div class='rating'>⭐ N/A</div>", unsafe_allow_html=True)
+
                     st.caption(row['genres'])

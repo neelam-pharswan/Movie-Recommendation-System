@@ -3,79 +3,97 @@ import pandas as pd
 import requests
 
 st.markdown("""
+st.markdown("""
 <style>
+
+/* Background */
 .stApp {
-    background: linear-gradient(135deg, #C71585, #8B0000, #2b2b2b);
+    background: linear-gradient(135deg, #1a001a, #C71585, #2b2b2b);
     color: white;
 }
 
+/* Main container spacing */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 1300px;
+}
+
+/* Title */
 h1 {
-    color: #ffffff;
     text-align: center;
-    font-size: 50px;
+    font-size: 52px;
     font-weight: 900;
+    color: white;
 }
 
-p {
-    font-size: 20px;
-    color: #f5f5f5;
+/* Left panel glass effect */
+[data-testid="column"]:first-child {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 20px;
 }
 
+/* Labels */
 label {
-    font-size: 20px !important;
-    font-weight: 700;
-    color: #ffffff !important;
+    font-size: 18px !important;
+    font-weight: 600;
 }
 
+/* Selectbox */
 div[data-baseweb="select"] {
-    background-color: #ffffff;
+    background: white;
     border-radius: 12px;
-    padding: 6px;
-    font-size: 18px;
 }
 
+/* Button */
 .stButton > button {
     background: linear-gradient(to right, #8B0000, #C71585);
     color: white;
     border-radius: 14px;
-    height: 58px;
-    width: 100%;
-    font-size: 22px;
+    height: 55px;
+    font-size: 20px;
     font-weight: bold;
     border: none;
+    transition: 0.3s;
 }
 
 .stButton > button:hover {
-    background: linear-gradient(to right, #a30000, #ff1493);
-    color: white;
+    transform: scale(1.08);
+    background: linear-gradient(to right, #ff004f, #ff1493);
 }
 
-h2, h3 {
-    font-size: 30px;
-    color: #ffffff;
+/* Subheader */
+h3 {
     text-align: center;
+    font-size: 30px;
 }
 
+/* Poster images */
 img {
     border-radius: 14px;
-    margin-bottom: 10px;
+    transition: transform 0.3s ease;
 }
 
+/* Hover zoom effect */
+img:hover {
+    transform: scale(1.12);
+}
+
+/* Movie title */
 strong {
-    font-size: 18px;
+    font-size: 17px;
 }
 
-[data-testid="stCaptionContainer"] {
-    font-size: 15px;
-    color: #eeeeee;
+/* Caption */
+.stCaption {
+    font-size: 14px;
+    color: #e0e0e0;
 }
 
-.block-container {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    max-width: 1400px;
-}
 </style>
+""", unsafe_allow_html=True)
 """, unsafe_allow_html=True)
 
 movies = pd.read_pickle("movies.pkl")

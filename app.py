@@ -5,87 +5,75 @@ import requests
 st.markdown("""
 <style>
 .stApp {
-    background: linear-gradient(135deg, #1a001a, #C71585, #2b2b2b);
+    background: linear-gradient(135deg, #C71585, #8B0000, #2b2b2b);
     color: white;
-}
-
-.block-container {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    max-width: 1300px;
 }
 
 h1 {
+    color: #ffffff;
     text-align: center;
-    font-size: 52px;
+    font-size: 50px;
     font-weight: 900;
-    color: white;
 }
 
 p {
-    font-size: 19px;
+    font-size: 20px;
     color: #f5f5f5;
 }
 
-[data-testid="column"]:first-child {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
-    border-radius: 16px;
-    padding: 20px;
-}
-
 label {
-    font-size: 18px !important;
-    font-weight: 600;
-    color: white !important;
+    font-size: 20px !important;
+    font-weight: 700;
+    color: #ffffff !important;
 }
 
 div[data-baseweb="select"] {
-    background: white;
+    background-color: #ffffff;
     border-radius: 12px;
+    padding: 6px;
+    font-size: 18px;
 }
 
 .stButton > button {
     background: linear-gradient(to right, #8B0000, #C71585);
     color: white;
     border-radius: 14px;
-    height: 55px;
+    height: 58px;
     width: 100%;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
     border: none;
-    transition: 0.3s;
 }
 
 .stButton > button:hover {
-    transform: scale(1.08);
-    background: linear-gradient(to right, #ff004f, #ff1493);
+    background: linear-gradient(to right, #a30000, #ff1493);
     color: white;
 }
 
 h2, h3 {
-    text-align: center;
     font-size: 30px;
-    color: white;
+    color: #ffffff;
+    text-align: center;
 }
 
 img {
     border-radius: 14px;
-    transition: transform 0.3s ease;
-}
-
-img:hover {
-    transform: scale(1.12);
+    margin-bottom: 10px;
 }
 
 strong {
-    font-size: 17px;
-    color: white;
+    font-size: 18px;
 }
 
-.stCaption {
-    font-size: 14px;
-    color: #e0e0e0;
+[data-testid="stCaptionContainer"] {
+    font-size: 15px;
+    color: #eeeeee;
+}
+
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 1400px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -177,12 +165,12 @@ with right:
         else:
             st.subheader("Recommended Movies")
 
-            cols = st.columns(6)
+            cols = st.columns(5)
 
             for i, row in result.head(10).iterrows():
                 poster = fetch_poster(row['title'])
 
-                with cols[i % 6]:
+                with cols[i % 5]:
                     if poster:
                         st.image(poster, use_container_width=True)
                     else:
